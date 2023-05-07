@@ -14,6 +14,7 @@ import javafx.util.Duration;
 
 public class Fractal extends Application {
     Pane pane = new Pane();
+
     double sceneLength = 1000;
     double sceneHeight = 1000;
     Scene scene = new Scene(pane, sceneLength, sceneHeight, Color.FLORALWHITE);
@@ -23,9 +24,27 @@ public class Fractal extends Application {
         stage.setTitle("Circles");
         circles(sceneLength/2, (sceneLength/2), (sceneHeight/2));
         stage.setScene(scene);
+
         Timeline zoom = new Timeline(
-                new KeyFrame(Duration.millis(1), actionEvent -> zoomIn(pane))
+                new KeyFrame(Duration.millis(10), event -> {
+                    zoomIn(pane);
+                }
+                )
         );
+        Timeline zoomOut = new Timeline(
+                new KeyFrame(Duration.seconds(23), event -> {
+                    Scale newScale = new Scale();
+                    newScale.setX(pane.getScaleX() - 0.52);
+                    newScale.setY(pane.getScaleY() - 0.52);
+                    newScale.setPivotX(sceneHeight/2);
+                    newScale.setPivotY(sceneLength/2);
+                    pane.getTransforms().add(newScale);
+                    System.out.println("zoomOut");
+                }
+                )
+        );
+        zoomOut.setCycleCount(Timeline.INDEFINITE);
+        zoomOut.play();
         zoom.setCycleCount(Timeline.INDEFINITE);
         zoom.play();
         stage.show();
@@ -53,13 +72,11 @@ public class Fractal extends Application {
         }
     }
     private void zoomIn(Pane pane) {
-
         Scale newScale = new Scale();
-        newScale.setX(pane.getScaleX() + 0.0001);
-        newScale.setY(pane.getScaleY() + 0.0001);
+        newScale.setX(pane.getScaleX() + 0.00035);
+        newScale.setY(pane.getScaleY() + 0.00035);
         newScale.setPivotX(sceneHeight/2);
-        newScale.setPivotY(sceneLength/2);
-
+        newScale.setPivotY((sceneLength/2));
         pane.getTransforms().add(newScale);
     }
 }
