@@ -17,6 +17,7 @@ public class Fractal extends Application {
 
     double sceneLength = 1000;
     double sceneHeight = 1000;
+    double zoom = 0;
     Scene scene = new Scene(pane, sceneLength, sceneHeight, Color.FLORALWHITE);
 
     @Override
@@ -32,14 +33,8 @@ public class Fractal extends Application {
                 )
         );
         Timeline zoomOut = new Timeline(
-                new KeyFrame(Duration.seconds(23), event -> {
-                    Scale newScale = new Scale();
-                    newScale.setX(pane.getScaleX() - 0.52);
-                    newScale.setY(pane.getScaleY() - 0.52);
-                    newScale.setPivotX(sceneHeight/2);
-                    newScale.setPivotY(sceneLength/2);
-                    pane.getTransforms().add(newScale);
-                    System.out.println("zoomOut");
+                new KeyFrame(Duration.seconds(10), event -> {
+                    zoomOut(pane);
                 }
                 )
         );
@@ -77,6 +72,15 @@ public class Fractal extends Application {
         newScale.setY(pane.getScaleY() + 0.00035);
         newScale.setPivotX(sceneHeight/2);
         newScale.setPivotY((sceneLength/2));
+        pane.getTransforms().add(newScale);
+
+    }
+    private void zoomOut(Pane pane) {
+        Scale newScale = new Scale();
+        newScale.setX(pane.getScaleX() - (pane.getScaleX()/3));
+        newScale.setY(pane.getScaleY() - (pane.getScaleY()/3));
+        newScale.setPivotX(sceneHeight/2);
+        newScale.setPivotY(sceneLength/2);
         pane.getTransforms().add(newScale);
     }
 }
